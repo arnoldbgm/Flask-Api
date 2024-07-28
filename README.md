@@ -16,3 +16,12 @@ De aqui viene lo que va a nuestra bd
 https://docs.sqlalchemy.org/en/14/core/metadata.html#sqlalchemy.schema.Column.__init__
 
 
+Para ejecutar las migraciones 
+# Crear la carpeta migrations (Solo la primera vez)
+flask db init
+
+# Crear la migración (Cada vez que se modifique el modelo)
+flask db migrate -m "Create tables"
+
+# Aplicar la migración (Cada vez que se modifique el modelo)
+flask db upgrade
