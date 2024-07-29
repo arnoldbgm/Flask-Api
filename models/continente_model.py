@@ -2,9 +2,6 @@
 from db import db
 from sqlalchemy import (Column, String, Integer)
 
-# El nombre de la clase no importa
-
-
 class ContinenteModel(db.Model):
     # Esto es el nombre de la tabla
     # TIP: Las tablas deben nombrarse en plural
@@ -16,4 +13,4 @@ class ContinenteModel(db.Model):
 
 
 # RETO: 
-# CREAR LA TABLA generos y grupos_musicales
+# CREAR LA TABLA generos
