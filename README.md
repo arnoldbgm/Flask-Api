@@ -79,7 +79,7 @@ if __name__ == '__main__':
 ```
 
 ### 8. Creacion de la base de datos
-![image](https://github.com/user-attachments/assets/74435c01-a3ff-4e2a-b4f7-fa7753e9fef5)
+![Bd](https://github.com/user-attachments/assets/4d7782ba-62e0-4148-88c9-7674e17e3d41)
 
 ### 9. Ejecutar la migración 🚀
 
@@ -158,3 +158,46 @@ continente_router = Blueprint('continente_router',__name__)
 def listar_libros():
 	pass
 ```
+### Historia del POS (RETO🐍🦾)
+
+Imaginemos que tenemos una empresa llamada **TechStore**, una tienda que vende productos tecnológicos. Un día, el jefe de la empresa, el Sr. García, entra a la oficina con una idea emocionante.
+
+"¡Equipo, tenemos que modernizarnos!", dice el Sr. García. "Quiero que nuestro sistema de punto de venta (POS) sea más eficiente. Necesitamos una aplicación que nos permita gestionar productos, registrar ventas y compras, y además, obtener estadísticas útiles sobre nuestras transacciones. ¿Quién se anima a trabajar en esto?"
+
+Como somos un equipo talentoso, tomamos el desafío con entusiasmo. Decidimos usar Flask, una herramienta poderosa para crear APIs en Python. A continuación, el Sr. García nos presenta diferentes retos que debemos solucionar.
+
+### Reto 1: Listado de Productos
+
+Primero, el Sr. García nos pide una manera de listar todos los productos disponibles en TechStore. Necesitamos crear un endpoint que nos permita obtener todos los productos desde la base de datos.
+
+**Pregunta:** ¿Cómo podríamos crear un endpoint en Flask que liste todos los productos disponibles?
+
+### Reto 2: Agregar un Nuevo Producto
+
+Luego, el Sr. García nos dice que necesitamos la capacidad de agregar nuevos productos al inventario de TechStore. Necesitamos un endpoint que reciba datos de un nuevo producto y lo agregue a la base de datos.
+
+**Pregunta:** ¿Cómo podríamos crear un endpoint en Flask que permita agregar un nuevo producto al inventario?
+
+### Reto 3: Registrar una Venta
+
+Para llevar el control de las ventas, el Sr. García nos pide que creemos un endpoint que registre cada venta realizada y actualice también el stock del producto vendido.
+
+**Pregunta:** ¿Cómo podríamos crear un endpoint en Flask que registre una venta y actualice el stock del producto vendido?
+
+### Reto 4: Registrar una Compra
+
+Para registrar cuando adquirimos más inventario, el Sr. García quiere que añadamos un endpoint que registre las compras y actualice el stock del producto.
+
+**Pregunta:** ¿Cómo podríamos crear un endpoint en Flask que registre una compra y actualice el stock del producto adquirido?
+
+### Reto 5: Estadísticas de Ventas y Compras
+
+El Sr. García también quiere ver las estadísticas mensuales de ventas y compras para tomar decisiones informadas. Nos pide crear endpoints para obtener la venta y la compra máxima por mes, así como el promedio mensual.
+
+**Pregunta 1:** ¿Cómo podríamos crear un endpoint en Flask que obtenga la venta máxima por mes?
+
+**Pregunta 2:** ¿Cómo podríamos crear un endpoint en Flask que calcule el promedio de ventas por mes?
+
+**Pregunta 3:** ¿Cómo podríamos crear un endpoint en Flask que obtenga la compra máxima por mes?
+
+**Pregunta 4:** ¿Cómo podríamos crear un endpoint en Flask que calcule el promedio de compras por mes?
