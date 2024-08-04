@@ -79,7 +79,7 @@ if __name__ == '__main__':
 ```
 
 ### 8. Creacion de la base de datos
-![image](https://github.com/user-attachments/assets/74435c01-a3ff-4e2a-b4f7-fa7753e9fef5)
+![Bd](https://github.com/user-attachments/assets/4d7782ba-62e0-4148-88c9-7674e17e3d41)
 
 ### 9. Ejecutar la migración 🚀
 
