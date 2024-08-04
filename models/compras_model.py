@@ -3,8 +3,8 @@ from datetime import datetime
 from sqlalchemy import (Column, String, Integer, ForeignKey, Float, DateTime)
 
 
-class PurchaseModel(db.Model):
-    __tablename__ = 'purchanse'
+class ComprasModel(db.Model):
+    __tablename__ = 'compras'
 
     id = Column(Integer, primary_key=True)
     product_id = Column(Integer, ForeignKey('product.id'), nullable=False)

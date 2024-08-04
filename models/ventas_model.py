@@ -2,8 +2,8 @@ from db import db
 from sqlalchemy import (Column, String, Integer, ForeignKey, Float, DateTime)
 from datetime import datetime
 
-class SaleModel(db.Model):
-    __tablename__ = 'sale'
+class VentasModel(db.Model):
+    __tablename__ = 'ventas'
 
     id = Column(Integer, primary_key=True)
     product_id = Column(Integer, ForeignKey('product.id'), nullable=False)

@@ -12,13 +12,10 @@ source venv/Scripts/activate
 
 ```
 
-### 3. Instalar Flask y extensiones 🛠️
+### 3. Instalar Flask y todo lo del proyecto 🛠️
 
 ```bash
-pip install Flask
-pip install Flask-SQLAlchemy
-pip install Flask-Migrate
-pip install psycopg2-binary   
+pip install -r requirements.txt
 ```
 
 ### 4. Crear un archivo `app.py` 📄
@@ -96,7 +93,7 @@ if __name__ == '__main__':
 - **Crear la migración (Cada vez que se modifique el modelo)**:
     
     ```bash
-    flask db migrate -m "Create tables"
+    flask db migrate -m "0001-Creacion de BD"
     
     ```
     
@@ -111,35 +108,42 @@ if __name__ == '__main__':
 ### 10. Insertaremos data dentro de nuestra bd🚀
 
 ```sql
--- Insertar datos en la tabla continentes
-INSERT INTO continentes (nombre) VALUES
-('América'),
-('Europa'),
-('Asia'),
-('África'),
-('Oceanía'),
-('Namekuzein');
+-- Inserción de productos
+INSERT INTO productos (name, price, stock) VALUES 
+('Tv Samsung', 10.0, 100),
+('Play Station 5', 20.0, 200),
+('Moto Lineales', 30.0, 300);
 
--- Insertar datos en la tabla generos
-INSERT INTO generos (nombre, continente_id) VALUES
-('Rock', 1),   -- América
-('Pop', 1),    -- América
-('Jazz', 1),   -- América
-('Clásica', 2), -- Europa
-('Electrónica', 2), -- Europa
-('K-Pop', 3),  -- Asia
-('Reggae', 4); -- África
+-- Inserción de ventas
+INSERT INTO ventas (product_id, quantity, price, timestamp) VALUES 
+(1, 5, 12.0, '2024-03-05 10:00:00'),  -- Precio de venta 12.0
+(2, 3, 22.0, '2024-03-10 12:00:00'),
+(1, 2, 11.0, '2024-04-15 14:00:00'),
+(3, 1, 33.0, '2024-04-20 16:00:00'),
+(2, 4, 21.0, '2024-05-25 18:00:00'),
+(1, 6, 13.0, '2024-05-30 20:00:00'),
+(3, 2, 31.0, '2024-06-05 09:00:00'),
+(1, 3, 12.5, '2024-06-10 11:00:00'),
+(2, 5, 23.0, '2024-07-15 13:00:00'),
+(3, 4, 32.0, '2024-07-20 15:00:00');
 
--- Insertar datos en la tabla grupos_musicales
-INSERT INTO grupos_musicales (nombre, anio_formacion, genero_id) VALUES
-('The Beatles', 1960, 1),    -- Rock
-('Queen', 1970, 1),          -- Rock
-('Michael Jackson', 1964, 2),-- Pop
-('Miles Davis', 1944, 3),    -- Jazz
-('Ludwig van Beethoven', 1770, 4), -- Clásica
-('Daft Punk', 1993, 5),      -- Electrónica
-('BTS', 2013, 6),            -- K-Pop
-('Bob Marley & The Wailers', 1963, 7); -- Reggae
+-- Inserción de compras
+INSERT INTO compras (product_id, quantity, price, timestamp) VALUES 
+(1, 10, 9.0, '2024-03-01 08:00:00'),  -- Precio de compra 9.0
+(2, 20, 18.0, '2024-03-05 10:00:00'),
+(3, 30, 27.0, '2024-03-10 12:00:00'),
+(1, 15, 8.5, '2024-04-01 14:00:00'),
+(2, 25, 17.5, '2024-04-05 16:00:00'),
+(3, 35, 26.5, '2024-04-10 18:00:00'),
+(1, 20, 9.5, '2024-05-01 08:00:00'),
+(2, 30, 19.0, '2024-05-05 10:00:00'),
+(3, 40, 28.0, '2024-05-10 12:00:00'),
+(1, 25, 10.0, '2024-06-01 14:00:00'),
+(2, 35, 20.0, '2024-06-05 16:00:00'),
+(3, 45, 29.0, '2024-06-10 18:00:00'),
+(1, 30, 10.5, '2024-07-01 08:00:00'),
+(2, 40, 21.0, '2024-07-05 10:00:00'),
+(3, 50, 30.0, '2024-07-10 12:00:00');
 
 ```
 

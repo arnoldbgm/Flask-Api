@@ -3,11 +3,11 @@ from db import db
 from flask_migrate import Migrate
 # Para que te reconzca la bd debes de importarlo de esta forma 🐍
 from models import (
+    compras_model,
     product_model,
-    purchanse_model,
-    sale_model
+    ventas_model
 )
-from router.continente_router import main
+from router.product_router import product_router
 
 
 app = Flask(__name__)
@@ -20,7 +20,7 @@ db.init_app(app)
 migrate = Migrate(app, db)
 
 # Aqui es donde voy a crear mi ruta
-app.register_blueprint(main, url_prefix='/api/v1')
+app.register_blueprint(product_router, url_prefix='/api/v1')
 
 if __name__ == '__main__':
     app.run(debug=True)
