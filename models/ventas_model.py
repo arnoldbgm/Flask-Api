@@ -4,9 +4,3 @@ from datetime import datetime
 
 class VentasModel(db.Model):
     __tablename__ = 'ventas'
-
-    id = Column(Integer, primary_key=True)
-    product_id = Column(Integer, ForeignKey('product.id'), nullable=False)
-    quantity = Column(Integer, nullable=False)
-    price = Column(Float, nullable=False)  # Precio de venta
-    timestamp = Column(DateTime, default=datetime.utcnow)
