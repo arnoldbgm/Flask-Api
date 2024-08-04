@@ -129,7 +129,7 @@ INSERT INTO ventas (product_id, quantity, price, timestamp) VALUES
 
 -- Inserción de compras
 INSERT INTO compras (product_id, quantity, price, timestamp) VALUES 
-(1, 10, 9.0, '2024-03-01 08:00:00'),  -- Precio de compra 9.0
+(1, 10, 9.0, '2024-03-01 08:00:00'), 
 (2, 20, 18.0, '2024-03-05 10:00:00'),
 (3, 30, 27.0, '2024-03-10 12:00:00'),
 (1, 15, 8.5, '2024-04-01 14:00:00'),
