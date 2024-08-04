@@ -1,103 +1,136 @@
 from flask import Blueprint, jsonify, request
 # Importe el modelo que quiero consultar
-from models.continente_model import ContinenteModel
-from models.genero_model import GeneroModel
+from models.product_model import ProductModel
+from models.purchanse_model import PurchaseModel
+from models.sale_model import SaleModel
 # Debemos de llamar a SqlAlchmey esta en mi db.py
 from db import db
 
-continente_router = Blueprint('continente_router', __name__)
+from sqlalchemy import func
 
-# Nombre /continentes-all  METODO GET
-# RETORNE "Hola amigo"
-# Leventar su proyecto
-# poniendo en la terminal python app.py
-# Prueban el endpoint en POSTMAN  Ó INSOMNIA
+main = Blueprint('main', __name__)
 
 
-@continente_router.route('/continentes-all', methods=['GET'])
-def listar_continentes():
-    # Para usar la orm debes de poner
-    # NombreDelModelo.query.METODO
-    continentes = ContinenteModel.query.all()
+@main.route('/products', methods=['GET'])
+def get_products():
+    # SQL => SELECT * FROM producto;
+    products = ProductModel.query.all()
+    return jsonify([product.to_dict() for product in products])
 
-    # METODO LARGO
-    # resultado = []
-    # for conti in continentes:
-    #     conti = {
-    #         'nombre': conti.nombre
-    #     }
-    #     resultado.append(conti)
-
-    # return jsonify(resultado)
-
-    # METODO CORTO
-    return jsonify([{
-        "id": conti.id,
-        "nombre": conti.nombre
-    } for conti in continentes])
-
-# Quiero que cree un endpoit  /genero => GET
-# Quiero usando la orm, me liste todos los generos
-
-
-# Voya traer un solo continente
-# Que la ruta que yo voy a enviar va a ser continente/6
-@continente_router.route('/continente/<int:id>', methods=['GET'])
-def traer_un_continente(id):
-    continente = ContinenteModel.query.get(id)
-    return jsonify({
-        "id": continente.id,
-        "nombre": continente.nombre
-    })
-
-
-# Quiero que me hagan un endpoint que me traiga un solo generos
-#  genero/<int:id>    METHODO = GET
-
-
-# Haremos un endpoit de tipo DELETE
-@continente_router.route('/continente/<int:id>', methods=['DELETE'])
-def delete_continente(id):
-    continente = ContinenteModel.query.get(id)
-    # Siempre que queramos ELIMINAR, ACTUALIZAR o INSERTAR
-    db.session.delete(continente)  # Esto prepara la eliminacion
-    db.session.commit()  # Se ejecuta la eliminacion
-    return jsonify({
-        "msg": "Eliminacion exitosa"
-    })
-
-
-# Quiero que hagan un enpoitn que me elimne los generos
-# genero/<int:id> METHODO = DELETE
-
-@continente_router.route('/continente-post', methods=['POST'])
-def continente_insert():
-    # Debemos de importar el request de flask
-    # Nosotrs enviamos informacion
-    data = request.get_json()  # Capturo la informacion que se envia
-    # Debemos crear una instancia de nuestro modelo
-    nuevo_continente = GeneroModel(**data)   # data.get('nombre')
-    # Ahora voy a prepar el insertado
-    db.session.add(nuevo_continente)
+@main.route('/product', methods=['POST'])
+def add_product():
+    data = request.get_json()
+    new_product = ProductModel(
+        name=data['name'],
+        price=data['price'],
+        stock=data[ 'stock']
+    )
+    db.session.add(new_product)
     db.session.commit()
-    # Es la respuesta
+    return jsonify(new_product.to_dict()), 201
+
+@main.route('/sale', methods=['POST'])
+def add_sale():
+    data = request.get_json()
+    new_sale = SaleModel(
+        product_id=data['product_id'],
+        quantity=data['quantity'],
+        price=data['price']
+    )
+    product = ProductModel.query.get(data['product_id'])
+    product.stock -= data['quantity']
+    db.session.add(new_sale)
+    db.session.commit()
+    return jsonify(new_sale.to_dict()), 201
+
+@main.route('/purchase', methods=['POST'])
+def add_purchase():
+    data = request.get_json()
+    new_purchase = PurchaseModel(
+        product_id=data['product_id'],
+        quantity=data['quantity'],
+        price=data['price']
+    )
+    product = ProductModel.query.get(data['product_id'])
+    product.stock += data['quantity']
+    db.session.add(new_purchase)
+    db.session.commit()
+    return jsonify(new_purchase.to_dict()), 201
+
+# Endpoint para obtener la máxima venta por mes
+@main.route('/sales/max-per-month', methods=['GET'])
+def get_max_sales_per_month():
+    sales = db.session.query(
+        func.to_char(SaleModel.timestamp, 'YYYY-MM').label('month'),
+        func.sum(SaleModel.quantity * SaleModel.price).label('total_sales')
+    ).group_by('month').all()
+
+    max_sales = {}
+    for sale in sales:
+        month = sale.month
+        total_sales = sale.total_sales
+        if month in max_sales:
+            if total_sales > max_sales[month]:
+                max_sales[month] = total_sales
+        else:
+            max_sales[month] = total_sales
+
+    return jsonify(max_sales)
+
+# Endpoint para calcular el promedio de ventas por mes
+@main.route('/sales/average-per-month', methods=['GET'])
+def get_average_sales_per_month():
+    sales = db.session.query(
+        func.to_char(SaleModel.timestamp, 'YYYY-MM').label('month'),
+        func.sum(SaleModel.quantity * SaleModel.price).label('total_sales')
+    ).group_by('month').all()
+
+    print(sales)
+
+    total_sales = sum(sale.total_sales for sale in sales)
+    average_sales = total_sales / len(sales) if sales else 0
+
+    monthly_sales = {sale.month: sale.total_sales for sale in sales}
+
     return jsonify({
-        "msg": "Creacion exitosa",
-        "id": nuevo_continente.id,
-        "nombre": nuevo_continente.nombre,
+        'average_sales_per_month': average_sales,
+        'monthly_sales': monthly_sales
     })
 
-# Quiero que hagan un endpoint que me cree los generos
-# genero-post METHODO = PUT
+# Endpoint para obtener la máxima compra por mes
+@main.route('/purchases/max-per-month', methods=['GET'])
+def get_max_purchases_per_month():
+    purchases = db.session.query(
+        func.to_char(PurchaseModel.timestamp, 'YYYY-MM').label('month'),
+        func.sum(PurchaseModel.quantity * PurchaseModel.price).label('total_purchases')
+    ).group_by('month').all()
 
-@continente_router.route('/continente-put/<int:id>', methods=['PUT'])
-def continenete_put(id):
-    # Capturo lo que quiero editar
-    continente = ContinenteModel.query.get(id)
-    data = request.get_json()  #Capturo la data para editarlo
-    continente.nombre = data['nombre']
-    db.session.commit()
+    max_purchases = {}
+    for purchase in purchases:
+        month = purchase.month
+        total_purchases = purchase.total_purchases
+        if month in max_purchases:
+            if total_purchases > max_purchases[month]:
+                max_purchases[month] = total_purchases
+        else:
+            max_purchases[month] = total_purchases
+
+    return jsonify(max_purchases)
+
+# Endpoint para calcular el promedio de compras por mes
+@main.route('/purchases/average-per-month', methods=['GET'])
+def get_average_purchases_per_month():
+    purchases = db.session.query(
+        func.to_char(PurchaseModel.timestamp, 'YYYY-MM').label('month'),
+        func.sum(PurchaseModel.quantity * PurchaseModel.price).label('total_purchases')
+    ).group_by('month').all()
+
+    total_purchases = sum(purchase.total_purchases for purchase in purchases)
+    average_purchases = total_purchases / len(purchases) if purchases else 0
+
+    monthly_purchases = {purchase.month: purchase.total_purchases for purchase in purchases}
+
     return jsonify({
-                    "id": continente.id,
-                    "nombre": continente.nombre
-                    })
+        'average_purchases_per_month': average_purchases,
+        'monthly_purchases': monthly_purchases
+    })
