@@ -13,7 +13,7 @@ from router.product_router import product_router
 app = Flask(__name__)
 
 # Aqui va las credenciales de mi bd
-app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost:5432/db_prueba"
+app.config["SQLALCHEMY_DATABASE_URI"] = "postgresql://postgres:root@localhost:5432/db_pos"
 
 # Aqui le digo que cuanto inicie mi app, que se haga la migracion si es que hay
 db.init_app(app)
